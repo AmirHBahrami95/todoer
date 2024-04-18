@@ -13,7 +13,7 @@ namespace todoer{
 			Task(std::string p_title,std::string p_desc):
 				m_title(p_title),
 				m_desc(p_desc),
-				m_done(p_done)
+				m_done(false)
 			{
 				m_ctime=utils::get_currdate_str();
 			}
@@ -21,7 +21,7 @@ namespace todoer{
 			Task (Task&& t):
 				m_title(std::move(t.m_title)),
 				m_desc(std::move(t.m_desc)),
-				m_ctime(std::move(t.m_ctime))
+				m_ctime(std::move(t.m_ctime)),
 				m_done(t.m_done) // copying doesn't hurt here really!
 			{}
 
@@ -46,8 +46,12 @@ namespace todoer{
 				m_done=p_done;
 			}
 
-			void setDescription(std::string p_desc){m_desc{std::move(p_desc)};}
-			void setTitle(std::string p_title){m_title(std::move(p_title));}
+			void setDescription(std::string p_desc){
+				m_desc=p_desc;
+			}
+			void setTitle(std::string p_title){
+				m_title=p_title;
+			}
 
 		private:
 			std::string m_title{"NULL"};
