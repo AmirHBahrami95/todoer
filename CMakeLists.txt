@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.18.4)
+project(todoer VERSION 0.5.0)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+add_executable(todoer src/main.cpp src/libs.h src/utils.h src/Task.h)
