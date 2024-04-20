@@ -1,24 +1,22 @@
 #include "./libs.h"
 #include "./Task.h"
 
+#define help() (std::cout	<<"<a>dd\n<l>ist\n<e>dit ID\n<s>ave\n<i>mport PATH_TO_CSV\n<q>uit\n<h>elp\n---"<<std::endl)
+
 int main(){
 	
-	std::cout<< "-std=c++"<<__cplusplus/100<<std::endl;
-
 	std::vector<todoer::Task> ts;
+
 	std::string move;
 	bool go_on=true;
 
-	// setting output flags
-	std::cout<<std::boolalpha;
-
-	std::cout	<<"<a>dd <l>ist <e>dit <s>ave <q>uit <h>elp"<<std::endl;
+	help();
 	while(go_on){
 		std::cout<<"$";
 		std::getline(std::cin,move);
 		switch(move[0]){
 			case 'a':
-				ts.push_back(std::move(todoer::read_task()));
+				ts.push_back(std::move(todoer::read_task());
 				std::cout<<"added."<<std::endl;
 			break;
 
@@ -27,7 +25,14 @@ int main(){
 			break;
 
 			case 's':
-				std::cout<<"[501 Not Implemented]"<<std::endl;
+				
+				// TODO write all the fuckers to some file with today's date
+				std::cout<<"save to(."<<PSEP<<"temp.csv):"<<std::endl;
+				std::getline(std::cin,move);
+				if(move.empty())
+					move=PSEP+"temp.csv";
+				tasks_to_csv(move,ts);
+				std::cout<<"saved to '"<<move<<"'"<<std::endl;
 			break;
 
 			case 'l':
@@ -39,7 +44,7 @@ int main(){
 			break;
 
 			case 'h':
-				std::cout	<<"<a>dd <l>ist <e>dit <q>uit <h>elp"<<std::endl;
+				help();
 			break;
 
 			default:
@@ -48,9 +53,6 @@ int main(){
 		}
 
 	}
-	/**/
-
-	// TODO write all the fuckers to some file with today's date
 
 	return 0;
 }
