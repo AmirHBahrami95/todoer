@@ -5,11 +5,13 @@
 
 namespace todoer{
 
+	// main class
 	class Task{
+
 		public:
 			
 			Task(){};
-			
+			// ~Task(){};
 
 			Task(std::string& p_title,std::string& p_desc,std::string& p_date):
 				m_title(p_title),
@@ -36,12 +38,9 @@ namespace todoer{
 
 			std::string to_string()const{ // in csv
 				std::string out{"\""};
-				out+=m_title;
-				out+="\",\"";
-				out+=m_desc;
-				out+="\",";
-				out+=m_ctime;
-				out+=",";
+				out+=m_title+"\""+VALSEP;
+				out+=m_desc+"\""+VALSEP;
+				out+=m_ctime+VALSEP;
 				out+=m_done;
 				// out+=";"; // removed for now making it easier to parse rows back
 				return out;
@@ -64,6 +63,14 @@ namespace todoer{
 			std::string m_ctime{"NULL"};
 			bool m_done{false};
 	};
+
+	// library functions
+	Task task_from_line(std::string& line);
+	void from_csv(std::vector<Task>& dest,std::string& path);
+	Task read_task();
+	void print_tasks(std::vector<Task>& ts);
+	void tasks_to_csv(std::ofstream& fout,std::vector<Task>& ts,bool write_headers=true);
+	void tasks_to_csv(std::string& path,std::vector<Task>& ts,bool write_headers=true);
 
 }
 #endif

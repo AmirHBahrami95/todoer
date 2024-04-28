@@ -7,20 +7,15 @@
 
 namespace todoer{
 
-	Task task_from_line(std::string& line){
-		std::string del=",";
-		std::vector<std::string> cols=std::move(utils::split(line,del));
-		return {cols[0],cols[1],cols[2]};
-	}
-
-	void read_tasks_csv(std::vector<Task>& dest,std::string& path){
+	void from_csv(std::vector<Task>& dest,std::string& path){
 	
 		// check if dest is full and if user gives 2 fucks about it
 		std::string temp;
 		if(!dest.empty()){
 			std::cout<<"WARNING: if you read '"<<path<<"' you'll loose all current tasks (not written to any file). continue (n)? y/n";
 			std::getline(std::cin,temp);
-			if(temp[0]=='n')return;
+			if(temp[0]!='y')return;
+			dest.clear();
 		}
 
 		std::ifstream fin{path};
@@ -29,7 +24,13 @@ namespace todoer{
 			return;
 		}
 		
-		// while(std::getline(std::cin,temp))	
+		std::string line;
+		std::vector<std::string> temp_str;
+		while(std::getline(fin,line)){ // TODO escape VALSEP character, whatever it is
+			temp_str=std::move(utils::split(line,','));
+			dest.push_back(Task(temp_str[0],temp_str[1],temp_str[2]));
+		}
+		
 	}
 
 	Task read_task(){
@@ -53,7 +54,7 @@ namespace todoer{
 		std::cout<<std::endl;
 	}
 
-	void tasks_to_csv(std::ofstream& fout,std::vector<Task>& ts,bool write_headers=true){
+	void tasks_to_csv(std::ofstream& fout,std::vector<Task>& ts,bool write_headers){
 		if(write_headers)
 			fout<<ts[0].getHeaders()<<std::endl;
 		for(int i=0;i<ts.size();i++)
@@ -61,13 +62,21 @@ namespace todoer{
 		fout.flush();
 	}
 
-	void tasks_to_csv(std::string& path,std::vector<Task>& ts,bool write_headers=true){
+	void tasks_to_csv(std::ofstream& fout,std::vector<Task>& ts){
+		tasks_to_csv(fout,ts,true);	
+	}
+
+	void tasks_to_csv(std::string& path,std::vector<Task>& ts,bool write_headers){
 		std::ofstream fout{path,std::ios::out};
 		if(!fout){
 			std::cerr<<"could not open '"<<path<<"' "<<std::endl;
 			return ;
 		}
-		tasks_to_csv(fout,ts);
+		tasks_to_csv(fout,ts,write_headers);
+	}
+
+	void tasks_to_csv(std::string& path,std::vector<Task>& ts){
+		tasks_to_csv(path,ts,true);
 	}
 
 };
