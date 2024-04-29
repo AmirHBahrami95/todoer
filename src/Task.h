@@ -37,9 +37,9 @@ namespace todoer{
 			{}
 
 			std::string to_string()const{ // in csv
-				std::string out{"\""};
-				out+=m_title+"\""+VALSEP;
-				out+=m_desc+"\""+VALSEP;
+				std::string out;
+				out+=m_title+VALSEP;
+				out+=m_desc+VALSEP;
 				out+=m_ctime+VALSEP;
 				out+=m_done;
 				// out+=";"; // removed for now making it easier to parse rows back

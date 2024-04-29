@@ -24,6 +24,9 @@ namespace utils{
 			"%Y-%m-%d",
 			timeinfo
 		);
+		
+		// free(timeinfo);
+		// timeinfo=nullptr;
 
 		std::string res=buffer;
 		return res;

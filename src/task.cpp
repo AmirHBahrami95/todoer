@@ -26,6 +26,7 @@ namespace todoer{
 		
 		std::string line;
 		std::vector<std::string> temp_str;
+		std::getline(fin,line); // skip headers // TODO make this thing settingable!
 		while(std::getline(fin,line)){ // TODO escape VALSEP character, whatever it is
 			temp_str=std::move(utils::split(line,','));
 			dest.push_back(Task(temp_str[0],temp_str[1],temp_str[2]));

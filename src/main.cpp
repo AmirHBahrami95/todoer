@@ -1,5 +1,6 @@
 #include "./libs.h"
 #include "./utils.h"
+#include "./Directory.h"
 #include "./Task.h"
 
 #define help() (std::cout	<<"<a>dd\n<l>ist\n<e>dit ID\n<s>ave\n<i>mport PATH_TO_CSV\n<q>uit\n<h>elp\n---"<<std::endl)
@@ -13,6 +14,16 @@
 int main(){
 	
 	std::vector<todoer::Task> ts;
+	
+	std::string prog_home=USER_HOME;
+	prog_home+=PSEP;
+	prog_home+="todoer";
+
+	#ifdef DEBUG
+		// std::cout<<"prog_home:"<<prog_home<<std::endl;
+	#endif
+
+	utils::Directory d(prog_home);
 
 	std::string move;
 	bool go_on=true;
@@ -32,14 +43,23 @@ int main(){
 				std::cout<<"[501 Not Implemented]"<<std::endl;
 			break;
 
+			case 'c':
+				std::cout<<"[501 Not Impleneted]"<<std::endl;
+			break;
+
 			case 's':
-				
-				// TODO write all the fuckers to some file with today's date
+				if(ts.size()==0){
+					std::cerr<<"nothing to save! you can <a>dd some tasks."<<std::endl;
+					continue;
+				}
+
+				// TODO write all the fuckers to some file with today's date as default
 				std::cout<<"save to (."<<PSEP<<"temp.csv):"<<std::endl;
 				std::getline(std::cin,move);
 				if(move.empty()){
-					move=".";
-					move=PSEP+"temp.csv";
+					move=prog_home;
+					move+=PSEP;
+					move+="temp.csv"; // for some fucking reason
 				}
 				tasks_to_csv(move,ts);
 				std::cout<<"saved to '"<<move<<"'"<<std::endl;
@@ -50,13 +70,16 @@ int main(){
 			break;
 
 			case 'i':
-				// TODO list potential files
-				// std::cout<<"csv files directory available:"<<PL_ENDL;
-				// d.print_files();
+				if(d.count_files(".csv")){
+					std::cout<<d.get_path()<<std::endl;
+					d.print_files(".csv");
+				}
 				std::cout<<"file: ";
-				if(move.empty())
-					move=PSEP+"temp.csv";
 				std::getline(std::cin,move);
+				if(move.empty()) continue;
+				if(std::isdigit(move[0]))
+					move=d.full_path_of(move[0]-'0');
+				std::cout<<move<<std::endl;
 				todoer::from_csv(ts,move);
 			break;
 
