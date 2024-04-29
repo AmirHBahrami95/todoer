@@ -55,12 +55,13 @@ namespace utils{
 
 			std::string full_path_of(int index,std::string ext) const{
 				std::string fp=m_path+PSEP;
-				std::string curr;
+				std::string curr="";
 				for(int i=0;i<m_files.size() && index>=0;i++)
 					if(utils::str_ends_with(m_files[i].name,ext)){
 						curr=m_files[i].name;
 						index--;
 					}
+				if(curr=="") return curr;
 				fp+=curr;
 				return fp;
 			}

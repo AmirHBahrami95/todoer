@@ -3,13 +3,14 @@
 #include "./Directory.h"
 #include "./Task.h"
 
-#define help() (std::cout	<<"<a>dd\n<l>ist\n<e>dit ID\n<s>ave\n<i>mport PATH_TO_CSV\n<q>uit\n<h>elp\n---"<<std::endl)
+#define help() (std::cout	<<"<a>dd |  <l>ist |  <e>dit ID |  <s>ave |  <i>mport PATH_TO_CSV |  <q>uit |  <h>elp\n---"<<std::endl)
 
 // TODO 0 set  a settings.shit that sets the home directory
 // TODO 1 make sure today's tasks are read each time user enters the program
 // TODO 2 make sure the todo1 is writable in settings.shit
 // TODO 3 introduce encryption :D
 // TODO 4 make encryption done with gpg/ssl/... (without asking user for password)
+// TODO 5 make a "CommandHandler" class and give it Directory and move jackshits. move the switch cases inside it
 
 int main(){
 	
@@ -70,17 +71,30 @@ int main(){
 			break;
 
 			case 'i':
+				
 				if(d.count_files(".csv")){
 					std::cout<<d.get_path()<<std::endl;
 					d.print_files(".csv");
 				}
+
 				std::cout<<"file: ";
 				std::getline(std::cin,move);
-				if(move.empty()) continue;
+				
+				if(move.empty()) {
+					std::cout<<"[400 Bad Request]"<<std::endl;
+					continue;
+				}
+
 				if(std::isdigit(move[0]))
 					move=d.full_path_of(move[0]-'0');
-				std::cout<<move<<std::endl;
+
+				if(move.empty()){
+					std::cout<<"[404 Not Found]"<<std::endl;
+					continue;
+				}
+
 				todoer::from_csv(ts,move);
+				std::cout<<"imported '"<<move<<"' "<<std::endl;
 			break;
 
 			case 'q':
